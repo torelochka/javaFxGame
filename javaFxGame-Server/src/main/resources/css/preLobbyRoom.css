@@ -1,0 +1,10 @@
+.question-category {
+    -fx-wrap-text: true;
+    -fx-min-width: 100;
+    -fx-pref-width: 150;
+}
+.question-button {
+    -fx-wrap-text: false;
+    -fx-min-width: 60;
+    -fx-cursor: hand;
+}

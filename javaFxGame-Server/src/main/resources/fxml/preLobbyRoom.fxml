@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="400.0" prefHeight="469.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.itis.zheleznov.controllers.PreLobbyController">
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="64.0" prefWidth="600.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startButton" mnemonicParsing="false" text="Начать игру">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="addButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addQuestion" text="Добавить тему">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <left>
+      <Pane prefHeight="336.0" prefWidth="32.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <Pane prefHeight="32.0" prefWidth="600.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </top>
+   <right>
+      <Pane prefHeight="200.0" prefWidth="32.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="listView" prefHeight="376.0" prefWidth="682.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

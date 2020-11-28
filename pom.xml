@@ -7,7 +7,11 @@
     <groupId>ru.itis.zheleznov</groupId>
     <artifactId>javaFxGame</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>javaFxGame-Client</module>
+        <module>javaFxGame-Server</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <build>
         <plugins>
@@ -29,6 +33,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+    </dependencies>
 
 
 </project>
