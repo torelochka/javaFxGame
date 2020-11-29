@@ -1,3 +1,7 @@
 .questionBoxOdd {
     -fx-background-color: #b1b3b1;
 }
+
+.error {
+    -fx-border-color: red;
+}

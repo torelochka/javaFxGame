@@ -1,6 +1,8 @@
 package ru.itis.zheleznov.controllers;
 
 import com.sun.org.apache.xml.internal.security.Init;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -14,9 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ru.itis.zheleznov.Main;
+import ru.itis.zheleznov.listeners.PointsFieldListener;
 import ru.itis.zheleznov.models.Question;
 import ru.itis.zheleznov.models.QuestionsRow;
 import ru.itis.zheleznov.models.RawQuestionRow;
+import ru.itis.zheleznov.validators.TextFieldValidator;
 import ru.itis.zheleznov.window.WindowManager;
 
 import java.io.IOException;
@@ -40,6 +44,8 @@ public class QuestionMakerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        points.textProperty().addListener(new PointsFieldListener(points));
+
         rawQuestion.add(RawQuestionRow.builder()
                 .question(question)
                 .points(points)
@@ -81,6 +87,8 @@ public class QuestionMakerController implements Initializable {
         HBox.setMargin(pointsField, new Insets(20,0,20,20));
         pointsBox.getChildren().addAll(pointsLabel, pointsField);
 
+        pointsField.textProperty().addListener(new PointsFieldListener(pointsField));
+
         vBox.getChildren().addAll(questionBox, pointsBox);
         rawQuestion.add(RawQuestionRow.builder()
                 .question(questionArea)
@@ -92,15 +100,17 @@ public class QuestionMakerController implements Initializable {
     //TODO валидатор
 
     public void create(ActionEvent event) throws IOException {
-        ArrayList<Question> questions = new ArrayList<>();
-        rawQuestion.forEach(r -> {
-            questions.add(new Question(r.getQuestion().getText(), Integer.parseInt(r.getPoints().getText())));
-        });
+        if (TextFieldValidator.validateQuestionMaker(rawQuestion, categoryName)) {
+            ArrayList<Question> questions = new ArrayList<>();
+            rawQuestion.forEach(r -> {
+                questions.add(new Question(r.getQuestion().getText(), Integer.parseInt(r.getPoints().getText())));
+            });
 
-        PreLobbyController.observableList.add(new QuestionsRow(categoryName.getText(), questions));
+            PreLobbyController.observableList.add(new QuestionsRow(categoryName.getText(), questions));
 
-        index = 2;
+            index = 2;
 
-        WindowManager.renderPreLobbyWindow(Main.primaryStage);
+            WindowManager.renderPreLobbyWindow(Main.primaryStage);
+        }
     }
 }
