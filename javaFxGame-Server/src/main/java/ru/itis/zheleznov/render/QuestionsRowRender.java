@@ -1,7 +1,10 @@
 package ru.itis.zheleznov.render;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -30,8 +33,9 @@ public class QuestionsRowRender implements Callback<ListView<QuestionsRow>, List
 
                     VBox vBox = new VBox();
                     vBox.setMaxWidth(300);
-                    hBox.setMaxWidth(500);
+                    //hBox.setMaxWidth(500);
                     hBox.getChildren().add(vBox);
+                    hBox.getChildren().add(GlyphsDude.createIconButton(FontAwesomeIcons.MINUS_CIRCLE, "dd", "20px", "10px", ContentDisplay.LEFT));
                     setGraphic(hBox);
                 }
             }

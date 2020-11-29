@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="1181.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.itis.zheleznov.controllers.QuestionMakerController">
+   <left>
+      <Pane prefHeight="634.0" prefWidth="50.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <Pane prefHeight="50.0" prefWidth="1181.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </top>
+   <right>
+      <Pane prefHeight="584.0" prefWidth="50.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="79.0" prefWidth="1181.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="createButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#create" text="Создать">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin></Button>
+            <Button fx:id="addQuestionButton" mnemonicParsing="false" onAction="#addQuestion" text="Добавить вопрос">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <ScrollPane prefHeight="505.0" prefWidth="1075.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="vBoxPane" prefHeight="502.0" prefWidth="1079.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="72.0" prefWidth="1079.0">
+                     <children>
+                        <Label text="Категория" />
+                        <TextField fx:id="categoryName">
+                           <HBox.margin>
+                              <Insets left="20.0" top="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <VBox fx:id="questionVBox" prefHeight="200.0" prefWidth="100.0" styleClass="questionBoxOdd">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Вопрос 1" />
+                              <TextArea fx:id="question" minHeight="100.0" minWidth="290.0" prefHeight="100.0" prefWidth="290.0">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </TextArea>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="101.0" prefWidth="1079.0">
+                           <children>
+                              <Label text="Очки" />
+                              <TextField fx:id="points">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="20.0" top="20.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

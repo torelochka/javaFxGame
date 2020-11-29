@@ -1,5 +1,7 @@
 package ru.itis.zheleznov.render;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -27,6 +29,5 @@ public class QuestionRender {
 
         HBox.setMargin(button, new Insets(0, 5, 0, 0));
         hBox.getChildren().add(button);
-
     }
 }
