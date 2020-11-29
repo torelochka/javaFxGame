@@ -33,7 +33,12 @@ public class PreLobbyController implements Initializable {
     }
 
     public void addQuestion(ActionEvent event) throws IOException {
-        WindowManager.renderQuestionMakerWindow(Main.primaryStage);
+        if (observableList.size() > 4) {
+            System.out.println("sss");
+            addButton.setDisable(true);
+        } else {
+            WindowManager.renderQuestionMakerWindow(Main.primaryStage);
+        }
     }
 
 
