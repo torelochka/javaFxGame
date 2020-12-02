@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.itis.zheleznov.controllers.LobbyController">
+   <left>
+      <Pane prefHeight="350.0" prefWidth="40.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <Pane prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </top>
+   <right>
+      <Pane prefHeight="360.0" prefWidth="40.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#startGame" text="Начать игру" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="listView" layoutX="1.0" prefHeight="302.0" prefWidth="521.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
