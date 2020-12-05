@@ -23,6 +23,7 @@ public class QuestionsRowRender implements Callback<ListView<QuestionsRow>, List
                 setGraphic(null);
                 setText(null);
                 if (!empty) {
+                    System.out.println("hello");
                     HBox hBox = new HBox();
                     hBox.setFillHeight(true);
                     hBox.setAlignment(Pos.CENTER_LEFT);

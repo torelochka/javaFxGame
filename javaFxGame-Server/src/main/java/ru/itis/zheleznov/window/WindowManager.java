@@ -52,7 +52,7 @@ public class WindowManager {
         FXMLLoader loader = new FXMLLoader();
         Parent root;
         try {
-            root = loader.load(WindowManager.class.getResourceAsStream("/fxml/game.fxml"));
+            root = loader.load(WindowManager.class.getResourceAsStream("/fxml/gameHost.fxml"));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

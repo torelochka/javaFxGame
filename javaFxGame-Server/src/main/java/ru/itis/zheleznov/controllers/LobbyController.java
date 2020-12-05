@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import ru.itis.zheleznov.Main;
 import ru.itis.zheleznov.models.Player;
+import ru.itis.zheleznov.protocol.Protocol;
 import ru.itis.zheleznov.render.PlayersRender;
 import ru.itis.zheleznov.service.GameServer;
 import ru.itis.zheleznov.window.WindowManager;

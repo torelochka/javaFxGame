@@ -2,20 +2,24 @@ package ru.itis.zheleznov.render;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Callback;
+import ru.itis.zheleznov.controllers.ClientGameController;
+import ru.itis.zheleznov.model.Message;
 import ru.itis.zheleznov.models.Player;
 
-public class PlayersRender implements Callback<ListView<Player>, ListCell<Player>> {
+public class PlayerRender implements Callback<ListView<Message>, ListCell<Message>> {
 
     @Override
-    public ListCell<Player> call(ListView<Player> param) {
-        return new ListCell<Player>() {
+    public ListCell<Message> call(ListView<Message> param) {
+        return new ListCell<Message>() {
             @Override
-            protected void updateItem(Player item, boolean empty) {
+            protected void updateItem(Message item, boolean empty) {
                 super.updateItem(item, empty);
                 setGraphic(null);
                 setText(null);
@@ -23,7 +27,7 @@ public class PlayersRender implements Callback<ListView<Player>, ListCell<Player
                     HBox hBox = new HBox();
                     hBox.setFillHeight(true);
                     hBox.setAlignment(Pos.CENTER_LEFT);
-                    Label label = new Label("Player: " + item.getLogin());
+                    Label label = new Label("Player " + item.getPlayer().getLogin() + ": " + item.getText());
                     CornerRadii cr = new CornerRadii(0);
                     Color color = Color.web("#000051");
 

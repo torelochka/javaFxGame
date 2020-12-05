@@ -1,17 +1,16 @@
 package ru.itis.zheleznov.service;
 
-import javafx.application.Platform;
-import ru.itis.zheleznov.controllers.LobbyController;
+import lombok.SneakyThrows;
 import ru.itis.zheleznov.handler.PlayerHandler;
 import ru.itis.zheleznov.models.Host;
-import ru.itis.zheleznov.models.Player;
+import ru.itis.zheleznov.models.Message;
+import ru.itis.zheleznov.models.QuestionsRow;
+import sun.awt.windows.ThemeReader;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GameServer extends Thread {
@@ -27,21 +26,40 @@ public class GameServer extends Thread {
     }
 
     public void startGame() {
-        players.forEach(c -> c.sendMsg("/start"));
+        players.forEach(PlayerHandler::sendStart);
+    }
+
+    public void sendQuestions(List<QuestionsRow> questionsRows) {
+        new Thread(() -> {
+            players.forEach(p -> p.sendQuestions(questionsRows));
+        }).start();
+    }
+
+    public void readAnswers() {
+        new Thread(() -> {
+            players.forEach(p -> p.readAnswers());
+        }).start();
     }
 
     @Override
     public void run() {
         while (true) {
+            //TODO ограничение в количестве игроков
             try {
-                Socket player = serverSocket.accept();
-                System.out.println("new Connection");
-                PlayerHandler playerHandler = new PlayerHandler(player, serverSocket);
-                playerHandler.start();
-                players.add(playerHandler);
+                if (players.size() < 5) {
+                    Socket player = serverSocket.accept();
+                    System.out.println("new Connection");
+                    PlayerHandler playerHandler = new PlayerHandler(player, this);
+                    playerHandler.start();
+                    players.add(playerHandler);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void broadcast(Message message) {
+        new Thread(() -> players.forEach(p -> p.sendAnswer(message))).start();
     }
 }

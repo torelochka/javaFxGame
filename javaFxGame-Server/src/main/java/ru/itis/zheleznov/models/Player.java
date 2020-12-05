@@ -5,15 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.net.Socket;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Player {
-    private String nickname;
+public class Player implements Serializable {
+    private String login;
     @Builder.Default
     private int points = 0;
     private Socket socket;
+
+    public Player(String login, Socket socket) {
+        this(login, 0, socket);
+    }
 }

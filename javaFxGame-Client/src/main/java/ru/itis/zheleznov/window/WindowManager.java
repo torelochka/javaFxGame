@@ -29,15 +29,15 @@ public class WindowManager {
         FXMLLoader loader = new FXMLLoader();
         Parent root;
         try {
-            root = loader.load(WindowManager.class.getResourceAsStream("/fxml/game.fxml"));
+            root = loader.load(WindowManager.class.getResourceAsStream("/fxml/gameClient.fxml"));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("game");
-        primaryStage.setMinHeight(450);
-        primaryStage.setMinWidth(650);
+        primaryStage.setMinHeight(800);
+        primaryStage.setMinWidth(1100);
         primaryStage.show();
     }
 }

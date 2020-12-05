@@ -1,28 +1,33 @@
 package ru.itis.zheleznov.handler;
 
 import javafx.application.Platform;
+import lombok.SneakyThrows;
 import ru.itis.zheleznov.controllers.LobbyController;
+import ru.itis.zheleznov.models.Message;
 import ru.itis.zheleznov.models.Player;
+import ru.itis.zheleznov.models.QuestionsRow;
+import ru.itis.zheleznov.protocol.Protocol;
+import ru.itis.zheleznov.service.GameServer;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.MessageDigestSpi;
+import java.util.List;
 
 public class PlayerHandler extends Thread {
 
     private final Socket player;
-    private final ServerSocket serverSocket;
-    private DataOutputStream outputStream;
-    private DataInputStream inputStream;
+    private final GameServer gameServer;
+    private OutputStream outputStream;
+    private InputStream inputStream;
 
-    public PlayerHandler(Socket player, ServerSocket serverSocket) {
+    public PlayerHandler(Socket player, GameServer gameServer) {
         this.player = player;
-        this.serverSocket = serverSocket;
+        this.gameServer = gameServer;
         try {
-            this.outputStream = new DataOutputStream(player.getOutputStream());
-            this.inputStream = new DataInputStream(player.getInputStream());
+            this.outputStream = player.getOutputStream();
+            this.inputStream = player.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,21 +35,34 @@ public class PlayerHandler extends Thread {
 
     @Override
     public void run() {
-        Platform.runLater(() -> {
-            try {
-                String nickname = inputStream.readUTF();
-                LobbyController.observableList.add(new Player(nickname, 0, player));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        String login = (String) Protocol.read(Protocol.NEW_PLAYER, inputStream, String.class);
+        if (login != null) {
+            Platform.runLater(() -> LobbyController.observableList.add(new Player(login, 0, player)));
+        }
     }
 
-    public void sendMsg(String msg) {
-        try {
-            outputStream.writeUTF(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void sendStart() {
+        Protocol.write(Protocol.START, outputStream);
+    }
+
+    public void readAnswers() {
+        new Thread(() -> {
+            Message message = (Message) Protocol.read(Protocol.SEND_ANSWER, inputStream, Message.class);
+            if (message != null) {
+                gameServer.broadcast(message);
+            }
+        }).start();
+    }
+
+    public void sendAnswer(Message message) {
+        new Thread(() -> {
+            Protocol.write(Protocol.SEND_ANSWER, message, outputStream);
+        }).start();
+    }
+
+    public void sendQuestions(List<QuestionsRow> questionsRows) {
+        new Thread(() -> {
+            Protocol.write(Protocol.QUESTIONS, questionsRows, outputStream);
+        }).start();
     }
 }
