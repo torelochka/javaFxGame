@@ -13,7 +13,7 @@ import ru.itis.zheleznov.controllers.ClientGameController;
 import ru.itis.zheleznov.model.Message;
 import ru.itis.zheleznov.models.Player;
 
-public class PlayerRender implements Callback<ListView<Message>, ListCell<Message>> {
+public class MessageRender implements Callback<ListView<Message>, ListCell<Message>> {
 
     @Override
     public ListCell<Message> call(ListView<Message> param) {

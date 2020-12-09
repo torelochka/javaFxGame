@@ -11,7 +11,10 @@
    <bottom>
       <VBox prefHeight="142.0" prefWidth="869.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="playersField" alignment="CENTER" prefHeight="107.0" prefWidth="869.0" />
+            <HBox fx:id="playersField" alignment="CENTER" prefHeight="107.0" prefWidth="869.0">
+               <children>
+                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#start" text="Button" />
+               </children></HBox>
          </children>
       </VBox>
    </bottom>

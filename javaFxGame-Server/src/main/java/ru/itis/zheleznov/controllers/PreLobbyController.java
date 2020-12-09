@@ -6,11 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.util.Builder;
 import ru.itis.zheleznov.Main;
 import ru.itis.zheleznov.models.Host;
 import ru.itis.zheleznov.models.QuestionsRow;
-import ru.itis.zheleznov.models.Question;
 import ru.itis.zheleznov.render.QuestionsRowRender;
 import ru.itis.zheleznov.service.SocketService;
 import ru.itis.zheleznov.window.WindowManager;
@@ -40,7 +38,7 @@ public class PreLobbyController implements Initializable {
             //TODO запретить клик на кнопку
             addButton.setDisable(true);
         } else {
-            WindowManager.renderQuestionMakerWindow(Main.primaryStage);
+            WindowManager.renderWindow(Main.primaryStage, "Question maker", "questionMakerRoom.fxml", 450, 650);
         }
     }
 
@@ -52,7 +50,7 @@ public class PreLobbyController implements Initializable {
                     .questions(observableList)
                     .serverSocket(SocketService.getServerSocketConnection())
                     .build();
-            WindowManager.renderLobbyWindow(Main.primaryStage);
+            WindowManager.renderWindow(Main.primaryStage, "Lobby", "hostLobby.fxml", 450, 650);
         }
     }
 }

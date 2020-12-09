@@ -1,5 +1,6 @@
 package ru.itis.zheleznov.models;
 
+import javafx.scene.control.Button;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Question implements Serializable {
+public class Question {
     private String questionName;
+    private Button button;
     private int points;
 }

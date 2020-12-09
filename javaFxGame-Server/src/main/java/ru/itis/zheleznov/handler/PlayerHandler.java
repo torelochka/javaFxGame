@@ -1,18 +1,21 @@
 package ru.itis.zheleznov.handler;
 
 import javafx.application.Platform;
-import lombok.SneakyThrows;
+import ru.itis.zheleznov.controllers.HostGameController;
+import ru.itis.zheleznov.controllers.HostQuestionController;
 import ru.itis.zheleznov.controllers.LobbyController;
+import ru.itis.zheleznov.dto.QuestionDto;
+import ru.itis.zheleznov.dto.QuestionsRowDto;
 import ru.itis.zheleznov.models.Message;
 import ru.itis.zheleznov.models.Player;
+import ru.itis.zheleznov.models.Question;
 import ru.itis.zheleznov.models.QuestionsRow;
 import ru.itis.zheleznov.protocol.Protocol;
 import ru.itis.zheleznov.service.GameServer;
 
+import java.awt.*;
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.MessageDigestSpi;
 import java.util.List;
 
 public class PlayerHandler extends Thread {
@@ -35,7 +38,7 @@ public class PlayerHandler extends Thread {
 
     @Override
     public void run() {
-        String login = (String) Protocol.read(Protocol.NEW_PLAYER, inputStream, String.class);
+        String login = (String) Protocol.read(Protocol.NEW_PLAYER, inputStream, outputStream, String.class);
         if (login != null) {
             Platform.runLater(() -> LobbyController.observableList.add(new Player(login, 0, player)));
         }
@@ -47,11 +50,18 @@ public class PlayerHandler extends Thread {
 
     public void readAnswers() {
         new Thread(() -> {
-            Message message = (Message) Protocol.read(Protocol.SEND_ANSWER, inputStream, Message.class);
-            if (message != null) {
-                gameServer.broadcast(message);
+            while (true) {
+                Message message = (Message) Protocol.read(Protocol.SEND_ANSWER, inputStream, outputStream, Message.class);
+                if (message != null) {
+                    gameServer.broadcast(message);
+                    HostQuestionController.checkAnswer(message);
+                }
             }
         }).start();
+    }
+
+    public void checkAnswer(boolean answer) {
+        Protocol.write(Protocol.CHECK_ANSWER, answer, outputStream);
     }
 
     public void sendAnswer(Message message) {
@@ -62,7 +72,28 @@ public class PlayerHandler extends Thread {
 
     public void sendQuestions(List<QuestionsRow> questionsRows) {
         new Thread(() -> {
-            Protocol.write(Protocol.QUESTIONS, questionsRows, outputStream);
+            Protocol.write(Protocol.PUT_QUESTIONS, QuestionsRowDto.from(questionsRows), outputStream);
         }).start();
+    }
+
+    public void waitChoose(List<QuestionsRow> questionsRows) {
+        new Thread(() -> {
+            while (true) {
+                QuestionDto questionDto = Protocol.readQuestion(Protocol.CHOOSE, inputStream, outputStream);
+                if (questionDto != null) {
+                    gameServer.nextRound(questionDto);
+                    gameServer.questionWindow(questionDto);
+                    break;
+                }
+            }
+        }).start();
+    }
+
+    public void move(Boolean flag) {
+        Protocol.write(Protocol.MOVE, flag, outputStream);
+    }
+
+    public void nextRound(QuestionDto questionDto) {
+        Protocol.write(Protocol.NEXT_ROUND, questionDto, outputStream);
     }
 }

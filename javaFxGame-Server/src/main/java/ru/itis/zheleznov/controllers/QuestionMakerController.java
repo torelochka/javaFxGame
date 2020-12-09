@@ -1,8 +1,5 @@
 package ru.itis.zheleznov.controllers;
 
-import com.sun.org.apache.xml.internal.security.Init;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -11,9 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ru.itis.zheleznov.Main;
 import ru.itis.zheleznov.listeners.PointsFieldListener;
@@ -27,7 +22,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 public class QuestionMakerController implements Initializable {
@@ -103,14 +97,14 @@ public class QuestionMakerController implements Initializable {
         if (TextFieldValidator.validateQuestionMaker(rawQuestion, categoryName)) {
             ArrayList<Question> questions = new ArrayList<>();
             rawQuestion.forEach(r -> {
-                questions.add(new Question(r.getQuestion().getText(), Integer.parseInt(r.getPoints().getText())));
+                questions.add(new Question(r.getQuestion().getText(), new Button(), Integer.parseInt(r.getPoints().getText())));
             });
 
-            PreLobbyController.observableList.add(new QuestionsRow(categoryName.getText(), questions));
+            PreLobbyController.observableList.add(new QuestionsRow(categoryName.getText(), new Button(), questions));
 
             index = 2;
 
-            WindowManager.renderPreLobbyWindow(Main.primaryStage);
+            WindowManager.renderWindow(Main.primaryStage, "Pre lobby room", "preLobbyRoom.fxml", 450, 650);
         }
     }
 }

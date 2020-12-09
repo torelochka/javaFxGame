@@ -37,7 +37,7 @@ public class LobbyController implements Initializable {
         System.out.println(observableList.size());
         if (observableList.size() >= 2) {
             server.startGame();
-            WindowManager.renderGameWindow(Main.primaryStage);
+            WindowManager.renderWindow(Main.primaryStage, "Game", "gameHost.fxml", 450, 650);
         }
     }
 }

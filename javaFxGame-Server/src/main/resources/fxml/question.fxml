@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="869.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.itis.zheleznov.controllers.HostQuestionController">
+    <bottom>
+        <VBox prefHeight="231.0" prefWidth="869.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                            <content>
+                                <ListView fx:id="listView" prefHeight="194.0" prefWidth="866.0" />
+                            </content>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="869.0">
+               <children>
+                  <Button fx:id="yesButton" mnemonicParsing="false" onAction="#check" text="Да" visible="false" />
+                  <Button fx:id="noButton" mnemonicParsing="false" onAction="#check" text="Нет" visible="false">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            </children>
+        </VBox>
+    </bottom>
+    <center>
+        <VBox alignment="CENTER" prefHeight="346.0" prefWidth="869.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="195.0" prefWidth="869.0">
+               <children>
+                  <Label fx:id="question" text="Label" wrapText="true">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="timer" text="Label">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+        </VBox>
+    </center>
+</BorderPane>

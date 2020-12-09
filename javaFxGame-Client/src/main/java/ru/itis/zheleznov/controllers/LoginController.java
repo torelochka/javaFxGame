@@ -24,7 +24,7 @@ public class LoginController {
         if (Validation.notEmpty(loginField)) {
             player = new Player(loginField.getText(), ClientSocketService.getSocketConnection());
             ClientSocketService.sendPlayer(player);
-            WindowManager.renderLobbyWindow(Main.primaryStage);
+            WindowManager.renderWindow(Main.primaryStage, "lobby", "clientLobby.fxml", 450, 650);
         }
     }
 }
