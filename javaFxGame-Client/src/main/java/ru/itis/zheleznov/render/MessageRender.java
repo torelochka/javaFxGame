@@ -27,7 +27,7 @@ public class MessageRender implements Callback<ListView<Message>, ListCell<Messa
                     HBox hBox = new HBox();
                     hBox.setFillHeight(true);
                     hBox.setAlignment(Pos.CENTER_LEFT);
-                    Label label = new Label("Player " + item.getPlayer().getLogin() + ": " + item.getText());
+                    Label label = new Label("Player " + item.getPlayer().getLogin() + " Points " + item.getPlayer().getPoints() + ": " + item.getText());
                     CornerRadii cr = new CornerRadii(0);
                     Color color = Color.web("#000051");
 

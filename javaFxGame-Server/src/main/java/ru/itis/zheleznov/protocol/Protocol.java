@@ -25,6 +25,7 @@ public class Protocol {
     public static final byte CHOOSE = 6;
     public static final byte NEXT_ROUND = 7;
     public static final byte CHECK_ANSWER = 8;
+    public static final byte NEXT_MOVE = 9;
 
     public static void write(byte command, Object object, OutputStream outputStreamRaw) {
         try {
@@ -51,13 +52,15 @@ public class Protocol {
     public static <T> Object read(byte command, InputStream inputStreamRaw, OutputStream outputStreamRaw, Class<T> clas) {
         try {
             DataInputStream inputStream = new DataInputStream(inputStreamRaw);
+
             byte commandFromInput = inputStream.readByte();
+            System.out.println(commandFromInput);
             if (commandFromInput == command) {
                 ObjectMapper mapper = new ObjectMapper();
                 String msg = inputStream.readUTF();
                 return (T) mapper.readValue(msg, clas);
             } else {
-                write(commandFromInput, outputStreamRaw);
+                //write(commandFromInput, outputStreamRaw);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,12 +73,11 @@ public class Protocol {
             DataInputStream inputStream = new DataInputStream(inputStreamRaw);
             byte commandFromInput = inputStream.readByte();
             if (commandFromInput == command) {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
                 String msg = inputStream.readUTF();
+                System.out.println(msg);
                 return convertQuestion(msg);
             } else {
-                write(commandFromInput, outputStreamRaw);
+                //write(commandFromInput, outputStreamRaw);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,7 +90,7 @@ public class Protocol {
             DataInputStream inputStream = new DataInputStream(inputStreamRaw);
             byte commandFromInput = inputStream.readByte();
             if (commandFromInput != command) {
-                write(commandFromInput, outputStreamRaw);
+                //write(commandFromInput, outputStreamRaw);
             }
             return commandFromInput == command;
         } catch (IOException e) {
@@ -102,10 +104,9 @@ public class Protocol {
             byte commandFromInput = inputStream.readByte();
             if (commandFromInput == command) {
                 String msg = inputStream.readUTF();
-                System.out.println(msg);
                 return convertList(msg);
             } else {
-                write(commandFromInput, outputStream);
+                //write(commandFromInput, outputStream);
             }
         } catch (IOException e) {
             e.printStackTrace();

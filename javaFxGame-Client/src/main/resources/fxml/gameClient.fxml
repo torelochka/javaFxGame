@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,27 +8,27 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="869.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.itis.zheleznov.controllers.ClientGameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="696.0" prefWidth="1052.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.itis.zheleznov.controllers.ClientGameController">
    <bottom>
-      <VBox prefHeight="142.0" prefWidth="869.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="156.0" prefWidth="1052.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <ScrollPane prefHeight="200.0" prefWidth="200.0">
                      <content>
-                        <ListView fx:id="listView" prefHeight="109.0" prefWidth="866.0" />
+                        <ListView fx:id="listView" prefHeight="109.0" prefWidth="1051.0" />
                      </content>
                   </ScrollPane>
                </children>
             </VBox>
-            <HBox prefHeight="31.0" prefWidth="869.0">
+            <HBox prefHeight="61.0" prefWidth="1052.0">
                <children>
-                  <TextField fx:id="textField" prefHeight="31.0" prefWidth="769.0">
+                  <TextField fx:id="textField" disable="true" prefHeight="31.0" prefWidth="970.0">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendMsg" text="send" />
+                  <Button fx:id="sendButton" disable="true" mnemonicParsing="false" onAction="#sendMsg" text="send" />
                </children>
             </HBox>
          </children>
@@ -36,11 +37,31 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="452.0" prefWidth="869.0">
+            <ScrollPane prefHeight="292.0" prefWidth="1052.0">
                <content>
-                  <ListView fx:id="questionsList" prefHeight="447.0" prefWidth="865.0" />
+                  <ListView fx:id="questionsList" prefHeight="290.0" prefWidth="1047.0" />
                </content>
             </ScrollPane>
+            <HBox alignment="CENTER" prefHeight="261.0" prefWidth="1052.0">
+               <children>
+                  <Label fx:id="questionLabel">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="timerLabel">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>

@@ -3,29 +3,27 @@ package ru.itis.zheleznov.service;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import ru.itis.zheleznov.controllers.ClientGameController;
-import ru.itis.zheleznov.controllers.ClientQuestionController;
 import ru.itis.zheleznov.controllers.LobbyController;
 import ru.itis.zheleznov.controllers.LoginController;
+import ru.itis.zheleznov.dto.Answer;
 import ru.itis.zheleznov.dto.PlayerDto;
 import ru.itis.zheleznov.dto.QuestionDto;
 import ru.itis.zheleznov.eventhandlers.QuestionButtonEventHandler;
 import ru.itis.zheleznov.model.Message;
 import ru.itis.zheleznov.model.Player;
-import ru.itis.zheleznov.models.Question;
 import ru.itis.zheleznov.models.QuestionsRow;
 import ru.itis.zheleznov.protocol.Protocol;
 
 import java.io.*;
 import java.net.Socket;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.List;
 import java.util.Properties;
 
 public class ClientSocketService {
+    public static Thread readAnswerThread;
+    private static boolean inGame = true;
+
     public static Socket getSocketConnection() {
         Properties properties = new Properties();
         try {
@@ -71,28 +69,32 @@ public class ClientSocketService {
         }).start();
     }
 
-    public static void readAnswer(Player player, ObservableList<Message> list, TextField text, Button sendButton, Label question) {
-        new Thread(() -> {
+    public static void readAnswer(Player player) {
+        
+        readAnswerThread = new Thread(() -> {
             while (true) {
-                Message message = null;
-                try {
-                    message = (Message) Protocol.read(Protocol.SEND_ANSWER, player.getSocket().getInputStream(), player.getSocket().getOutputStream(), Message.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (message != null) {
-                    Message finalMessage = message;
-
-                    Platform.runLater(() -> {
-                        text.setDisable(true);
-                        sendButton.setDisable(true);
-                        ClientQuestionController.timeline.stop();
-                        question.setText("Отвечает игрок " + finalMessage.getPlayer().getLogin());
-                        list.add(finalMessage);
-                    });
+                while (inGame) {
+                    Message message = null;
+                    try {
+                        message = (Message) Protocol.read(Protocol.SEND_ANSWER, player.getSocket().getInputStream(), player.getSocket().getOutputStream(), Message.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (message != null) {
+                        ClientGameController.checkAnswer(message);
+                    }
                 }
             }
-        }).start();
+        });
+        readAnswerThread.start();
+    }
+
+    public static void stopReadAnswer() {
+        inGame = false;
+    }
+
+    public static void startReadAnswer() {
+        inGame = true;
     }
 
     public static void readQuestions(Player player, ObservableList<QuestionsRow> list) {
@@ -100,8 +102,10 @@ public class ClientSocketService {
             while (true) {
                 List<QuestionsRow> questions = Protocol.readQuestions(Protocol.PUT_QUESTIONS, player.getSocket().getInputStream(), player.getSocket().getOutputStream());
                 if (questions != null) {
-                    System.out.println("client " + questions);
-                    Platform.runLater(() -> list.addAll(questions));
+                    Platform.runLater(() -> {
+                        list.removeIf(q -> true);
+                        list.addAll(questions);
+                    });
                     break;
                 }
             }
@@ -115,8 +119,8 @@ public class ClientSocketService {
             while (true) {
                 try {
                     Boolean bool = (Boolean) Protocol.read(Protocol.MOVE, player.getSocket().getInputStream(), player.getSocket().getOutputStream(), Boolean.class);
-                    System.out.println("Check");
                     if (bool != null) {
+                        ClientGameController.move = bool;
                         if (bool) {
                             Platform.runLater(() ->
                                     questionsRows.forEach(qr -> qr.getQuestions().forEach(q -> {
@@ -126,7 +130,7 @@ public class ClientSocketService {
                                     }))
                             );
                         }
-                        ClientSocketService.nextRound(LoginController.player);
+                        nextRound(LoginController.player);
                         break;
                     }
                 } catch (IOException e) {
@@ -134,10 +138,22 @@ public class ClientSocketService {
                 }
             }
         }).start();
-}
+    }
+
+    public static void chooseQuestion(List<QuestionsRow> questionsRows) {
+        Platform.runLater(() -> {
+            questionsRows.forEach(qr -> qr.getQuestions().forEach(q -> {
+                q.getButton().setDisable(false);
+                q.getButton().setCursor(Cursor.HAND);
+                q.getButton().setOnAction(new QuestionButtonEventHandler(q));
+            }));
+        });
+
+    }
 
     public static void sendChoose(Player player, QuestionDto questionDto) {
         try {
+            System.out.println("write");
             Protocol.write(Protocol.CHOOSE, questionDto, player.getSocket().getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,18 +162,37 @@ public class ClientSocketService {
 
     public static void nextRound(Player player) {
         new Thread(() -> {
-           while (true) {
-               try {
-                   QuestionDto questionDto = (QuestionDto) Protocol.read(Protocol.NEXT_ROUND, player.getSocket().getInputStream(), player.getSocket().getOutputStream(), QuestionDto.class);
-                   if (questionDto != null) {
-                       ClientGameController.nextRound(questionDto);
-                       ClientGameController.chosenQuestion = questionDto;
-                       break;
-                   }
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           }
+            while (true) {
+                try {
+                    QuestionDto questionDto = (QuestionDto) Protocol.read(Protocol.NEXT_ROUND, player.getSocket().getInputStream(), player.getSocket().getOutputStream(), QuestionDto.class);
+                    if (questionDto != null) {
+                        /*Platform.runLater(() -> {
+                            ClientGameController.questions.forEach(qr -> qr.getQuestions().removeIf(q -> QuestionDto.from(q).equals(questionDto)));
+                            ClientGameController.questions.removeIf(qr -> qr.getQuestions().isEmpty());
+                        });*/
+                        ClientGameController.chosenQuestion = questionDto;
+                        ClientGameController.nextRound(questionDto);
+                        break;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }).start();
+    }
+
+    public static void checkAnswer(Player player) {
+        Answer answer;
+        while (true) {
+            try {
+                answer = (Answer) Protocol.read(Protocol.CHECK_ANSWER, player.getSocket().getInputStream(), player.getSocket().getOutputStream(), Answer.class);
+                if (answer != null) {
+                    ClientGameController.nextMove(answer);
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

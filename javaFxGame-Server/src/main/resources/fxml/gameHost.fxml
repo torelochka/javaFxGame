@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -13,20 +14,44 @@
          <children>
             <HBox fx:id="playersField" alignment="CENTER" prefHeight="107.0" prefWidth="869.0">
                <children>
-                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#start" text="Button" />
+                  <Button fx:id="yesButton" mnemonicParsing="false" onAction="#check" text="Да" visible="false">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#start" text="Начать игру" />
+                  <Button fx:id="noButton" mnemonicParsing="false" onAction="#check" text="Нет" visible="false">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Button>
                </children></HBox>
          </children>
       </VBox>
    </bottom>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane layoutX="335.0" layoutY="125.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <content>
-                  <ListView fx:id="listView" prefHeight="448.0" prefWidth="866.0" />
-               </content>
-            </ScrollPane>
+            <Label fx:id="questionLabel">
+               <font>
+                  <Font size="34.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="timerLabel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
          </children>
-      </AnchorPane>
+      </HBox>
    </center>
 </BorderPane>

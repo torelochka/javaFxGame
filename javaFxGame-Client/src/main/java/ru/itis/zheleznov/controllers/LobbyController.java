@@ -20,6 +20,6 @@ public class LobbyController implements Initializable {
     }
 
     public static void start() {
-        Platform.runLater(() -> WindowManager.renderWindow(Main.primaryStage, "Game", "gameClient.fxml", 800, 1100));
+        Platform.runLater(() -> WindowManager.renderWindow(Main.primaryStage, "Game", "gameClient.fxml", 1050, 760));
     }
 }

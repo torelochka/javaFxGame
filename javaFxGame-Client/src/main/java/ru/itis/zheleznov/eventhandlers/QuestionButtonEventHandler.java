@@ -3,9 +3,11 @@ package ru.itis.zheleznov.eventhandlers;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import ru.itis.zheleznov.controllers.ClientGameController;
+import ru.itis.zheleznov.controllers.LoginController;
+import ru.itis.zheleznov.dto.QuestionDto;
 import ru.itis.zheleznov.models.Question;
+import ru.itis.zheleznov.service.ClientSocketService;
 
 public class QuestionButtonEventHandler implements EventHandler<ActionEvent> {
 
@@ -17,6 +19,6 @@ public class QuestionButtonEventHandler implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
-        ClientGameController.sendChoose(question);
+        ClientSocketService.sendChoose(LoginController.player, QuestionDto.from(question));
     }
 }
